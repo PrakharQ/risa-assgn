@@ -1,10 +1,12 @@
 # Initialize FastAPI and FacebookClient
 import os
+import threading
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, RedirectResponse
 import requests
 from dotenv import load_dotenv
 from facebookClient.facebookClient import FacebookClient
+from facebookClient.facebookSeleniumClient import FacebookSeleniumClient
 from logger.logger import CustomLogger
 
 load_dotenv()
@@ -12,10 +14,13 @@ app = FastAPI()
 
 APP_ID = os.getenv("FACEBOOK_APP_ID")
 APP_SECRET = os.getenv("FACEBOOK_APP_SECRET")
-REDIRECT_URI = "http://localhost:8000/api/callback"  # Update based on your setup
+REDIRECT_URI = "http://localhost:8000/api/callback" 
 facebook_client = FacebookClient(app_id=APP_ID, app_secret=APP_SECRET, redirect_uri=REDIRECT_URI)
 logger = CustomLogger()
 
+class UserInput:
+    email: str
+    password: str
 
 
 @app.get("/api/download-profile-picture")
@@ -26,6 +31,16 @@ async def login():
     logger.info("Root endpoint was accessed")
     login_url = facebook_client.get_login_url()
     return RedirectResponse(login_url)
+
+@app.post("/api/selenium/download-profile-picture")
+async def download_profile_picture(user_input: UserInput):
+    """
+    Downloads the user's profile picture using the Selenium-based FacebookClient.
+    """
+    facebook_client = FacebookSeleniumClient(user_input.email, user_input.password)
+    facebook_client.login()
+    facebook_client.download_profile_picture()
+    return JSONResponse(content={"message": "Profile picture downloaded successfully"})
 
 
 @app.get("/api/callback")
