@@ -21,11 +21,11 @@ UPLOAD_BUCKET = os.getenv("UPLOAD_BUCKET")
 if not FACEBOOK_APP_ID or not FACEBOOK_APP_SECRET:
     raise ValueError("Facebook App ID and Secret must be set in the environment.")
 
-# Initialize FastAPI app, logger, and Facebook client
 app = FastAPI()
 logger = CustomLogger()
 s3_client = S3Client(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, region='ap-south-1', logger=logger)
 facebook_client = FacebookClient(FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, REDIRECT_URI, logger)
+    
 
 
 class UserInput(BaseModel):
@@ -40,9 +40,6 @@ async def redirect_to_facebook():
     fb_login_url = facebook_client.get_login_url()
     logger.info("Redirecting user to Facebook login.")
     return RedirectResponse(url=fb_login_url)
-
-# @app.get("/api/automate/download-picture")
-# async def download_picture_automatically(user_input: UserInput):
 
 
 

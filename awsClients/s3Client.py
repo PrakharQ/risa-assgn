@@ -1,6 +1,5 @@
 from io import BytesIO
 import boto3
-import os
 from botocore.exceptions import BotoCoreError, ClientError
 
 from logger.logger import CustomLogger
@@ -75,7 +74,6 @@ class S3Client:
                 Params={'Bucket': bucket_name, 'Key': key},
                 ExpiresIn=expiration
             )
-            print(url)
             self.logger.info(f"Pre-signed URL generated successfully for '{key}'.")
             return url
         except ClientError as e:

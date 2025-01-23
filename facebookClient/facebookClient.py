@@ -126,10 +126,6 @@ class FacebookClient:
 
             response = requests.get(picture_url, timeout=10)
             response.raise_for_status()
-            with open(save_path, "wb") as file:
-                file.write(response.content)
-
-            self.logger.info(f"Profile picture successfully saved to {save_path}")
             return response.content
         except requests.exceptions.RequestException as e:
             self.logger.error(f"Error downloading profile picture: {e}")
