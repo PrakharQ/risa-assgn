@@ -1,2 +1,1 @@
 from .facebookClient import FacebookClient
-from .facebookSeleniumClient import FacebookSeleniumClient

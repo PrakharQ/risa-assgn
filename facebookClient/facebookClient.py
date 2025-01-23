@@ -1,7 +1,5 @@
 import requests
 import uuid
-
-from awsClients.s3Client import S3Client
 from logger.logger import CustomLogger
 
 
