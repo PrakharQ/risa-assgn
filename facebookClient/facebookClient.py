@@ -1,6 +1,9 @@
 import requests
 import uuid
 
+from awsClients.s3Client import S3Client
+from logger.logger import CustomLogger
+
 
 class FacebookClient:
     """
@@ -13,7 +16,7 @@ class FacebookClient:
         logger: Logger instance for logging operations.
     """
 
-    def __init__(self, app_id: str, app_secret: str, redirect_uri: str, logger):
+    def __init__(self, app_id: str, app_secret: str, redirect_uri: str, logger: CustomLogger):
         self.app_id = app_id
         self.app_secret = app_secret
         self.redirect_uri = redirect_uri
@@ -123,12 +126,11 @@ class FacebookClient:
 
             response = requests.get(picture_url, timeout=10)
             response.raise_for_status()
-
             with open(save_path, "wb") as file:
                 file.write(response.content)
 
             self.logger.info(f"Profile picture successfully saved to {save_path}")
-            return save_path
+            return response.content
         except requests.exceptions.RequestException as e:
             self.logger.error(f"Error downloading profile picture: {e}")
             raise
