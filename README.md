@@ -8,7 +8,7 @@ Follow these steps to set up and run the application locally:
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/risa-assgn.git
+    [git clone https://github.com/yourusername/risa-assgn.git](https://github.com/PrakharQ/risa-assgn.git)
     ```
 2. **Navigate to the project directory:**
     ```bash
